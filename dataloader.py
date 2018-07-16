@@ -19,20 +19,27 @@ def populateTrainList(folderPath):
 
 	return trainList
 
+def populateTrainListCelebA(folderPath):
+	trainList = glob.glob(folderPath + '/' + '*.jpg')
+
+	return trainList
+
 
 class inpaintLoader(data.Dataset):
 
 	def __init__(self, folderPath):
 
-		self.trainList = populateTrainList(folderPath)
+		#self.trainList = populateTrainList(folderPath)
+		self.trainList = populateTrainListCelebA(folderPath)
 		print("# of training samples:", len(self.trainList))
 
 	def __getitem__(self, index):
 
 		img_path = self.trainList[index]
-		img = np.array(cv2.imread(img_path), dtype=np.float32)
+		img = np.array(cv2.resize(cv2.imread(img_path),(256,256)), dtype=np.float32)
 		h,w,c = img.shape
-
+		#print(img.shape)
+		#brak
 		# Normalizing
 		img = (img/127.5) - 1
 
